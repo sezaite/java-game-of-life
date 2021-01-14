@@ -17,15 +17,19 @@ public class JavaApplication7 {
     public static void main(String[] args) {
         char[][] field = new char[50][50];
         char[][] newField = new char[50][50];
+
+        char[][][] total = new char[10000][50][50];
         int iteracijosCount = 0;
 
         //PIRMINES KAIMINYSTES ISPIESIMAS:
         for (int i = 0; i < field.length; i++) {
             for (int j = 0; j < field[i].length; j++) {
-                if (Math.random() < 0.24) {
+                if (Math.random() < 0.04) {
                     field[i][j] = 'X';
+                    total[0][i][j] = field[i][j];
                 } else {
                     field[i][j] = ',';
+                    total[0][i][j] = field[i][j];
                 }
             }
         }
@@ -36,10 +40,14 @@ public class JavaApplication7 {
             System.out.println();
         }
 
-        while (arNeLygus(field, newField)) {
+        while (arNeLygus(newField, total) && (iteracijosCount < total.length)) {
             if (iteracijosCount > 0) {
+                //SUKISIMAS I TOTAL ARRAY:
+                total[iteracijosCount] = totalPush(total[iteracijosCount], newField);
+                //FIELD IR NEWFIELD SUKEITIMAS VIETOMIS (TAM, KAD PASISLINKTU SEKA):
                 field = arraySukeitimas(field, newField);
             }
+
             //KAIMYNU SKAICIAVIMAS, KRASTINIU GYVENTOJU VALIDACIJOS:
             for (int i = 0; i < field.length; i++) {
                 for (int j = 0; j < field[i].length; j++) {
@@ -186,20 +194,25 @@ public class JavaApplication7 {
         return kaimynas;
     }
 
-    //PALYGINIMAS SU PRIES TAI BUVUSIA
-    static public boolean arNeLygus(char[][] field, char[][] newField) {
-        for (int i = 0; i < field.length; i++) {
-            for (int j = 0; j < field[i].length; j++) {
-                if (field[i][j] != newField[i][j]) {
+    //PALYGINIMAS SU TOTAL MASYVU
+    static public boolean arNeLygus(char[][] newField, char[][][] total) {
+        for (int x = 0; x < total.length; x++) {
+            for (int i = 0; i < newField.length; i++) {
+                for (int j = 0; j < newField[i].length; j++) {
+                    if (newField[i][j] == total[x][i][j]) {
+                        continue;
+                    } 
                     return true;
                 }
             }
         }
+        System.out.println("ciklas baigiasi, nusistovejo tvarka");
         return false;
     }
 
-    //ARRAY SUKEITIMAS, IGALINAMAS PRIES KIEVIENA CIKLA, PO PIRMOSIOS PARTIJOS;
+    //ARRAY SUKEITIMAS, IGALINAMAS PRIES KIEVIENA CIKLA, PRADEDANT PO PIRMOSIOS PARTIJOS IVYKDYMO;
     static public char[][] arraySukeitimas(char[][] field, char[][] newField) {
+
         for (int i = 0; i < field.length; i++) {
             for (int j = 0; j < field[i].length; j++) {
                 field[i][j] = newField[i][j];
@@ -207,4 +220,14 @@ public class JavaApplication7 {
         }
         return field;
     }
+
+    static public char[][] totalPush(char[][] total, char[][] newField) {
+        for (int i = 0; i < newField.length; i++) {
+            for (int j = 0; j < newField[i].length; j++) {
+                total[i][j] = newField[i][j];
+            }
+        }
+        return total;
+    }
+
 }
