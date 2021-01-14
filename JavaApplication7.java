@@ -24,7 +24,7 @@ public class JavaApplication7 {
         //PIRMINES KAIMINYSTES ISPIESIMAS:
         for (int i = 0; i < field.length; i++) {
             for (int j = 0; j < field[i].length; j++) {
-                if (Math.random() < 0.04) {
+                if (Math.random() < 0.23) {
                     field[i][j] = 'X';
                     total[0][i][j] = field[i][j];
                 } else {
@@ -40,7 +40,7 @@ public class JavaApplication7 {
             System.out.println();
         }
 
-        while (arNeLygus(newField, total) && (iteracijosCount < total.length)) {
+        while (arNeLygus(newField, total, iteracijosCount) && (iteracijosCount < total.length)) {
             if (iteracijosCount > 0) {
                 //SUKISIMAS I TOTAL ARRAY:
                 total[iteracijosCount] = totalPush(total[iteracijosCount], newField);
@@ -195,22 +195,20 @@ public class JavaApplication7 {
     }
 
     //PALYGINIMAS SU TOTAL MASYVU
-    static public boolean arNeLygus(char[][] newField, char[][][] total) {
-        for (int x = 0; x < total.length; x++) {
-            for (int i = 0; i < newField.length; i++) {
-                for (int j = 0; j < newField[i].length; j++) {
-                    if (newField[i][j] == total[x][i][j]) {
-                        continue;
-                    } 
-                    return true;
-                }
+    static public boolean arNeLygus(char[][] newField, char[][][] total, int count) {
+        int i = 0;
+        while (i < count) {
+            if (masyvuLyginimas(newField, total[i])) {
+                i++;
+            } else {
+                System.out.println("Susikure ritmingas ciklas");
+                return false;
             }
         }
-        System.out.println("ciklas baigiasi, nusistovejo tvarka");
-        return false;
+        return true;
     }
-
     //ARRAY SUKEITIMAS, IGALINAMAS PRIES KIEVIENA CIKLA, PRADEDANT PO PIRMOSIOS PARTIJOS IVYKDYMO;
+
     static public char[][] arraySukeitimas(char[][] field, char[][] newField) {
 
         for (int i = 0; i < field.length; i++) {
@@ -228,6 +226,18 @@ public class JavaApplication7 {
             }
         }
         return total;
+    }
+
+    static public boolean masyvuLyginimas(char[][] newField, char[][] total) {
+        for (int i = 0; i < newField.length; i++) {
+            for (int j = 0; j < newField[i].length; j++) {
+                if (newField[i][j] != total[i][j]) {
+                    return true;
+                }
+            }
+
+        }
+        return false;
     }
 
 }
