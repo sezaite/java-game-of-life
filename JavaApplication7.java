@@ -16,6 +16,8 @@ public class JavaApplication7 {
      */
     public static void main(String[] args) {
         char[][] field = new char[50][50];
+        char[][] newField = new char[50][50];
+        int iteracijosCount = 0;
 
         //PIRMINES KAIMINYSTES ISPIESIMAS:
         for (int i = 0; i < field.length; i++) {
@@ -33,148 +35,176 @@ public class JavaApplication7 {
             }
             System.out.println();
         }
-        
-        System.out.println();
-        System.out.println();
-        System.out.println();
 
-        //KAIMYNU SKAICIAVIMAS, KRASTINIU GYVENTOJU VALIDACIJOS:
-        for (int i = 0; i < field.length; i++) {
-            for (int j = 0; j < field[i].length; j++) {
+        while (arNeLygus(field, newField)) {
+            if (iteracijosCount > 0) {
+                field = arraySukeitimas(field, newField);
+            }
+            //KAIMYNU SKAICIAVIMAS, KRASTINIU GYVENTOJU VALIDACIJOS:
+            for (int i = 0; i < field.length; i++) {
+                for (int j = 0; j < field[i].length; j++) {
 
-                if (i == 0) { //PIRMOS EILUTES KAIMYNAI
-                    if (j == 0) {
-                        //pirmas kampinis pirmos eilutes elementas;
-                        int xCount = 0;
-                        for (int k = i; k < i + 2; k++) {
-                            for (int l = j; l < j + 2; l++) {
-                                if (field[k][l] == 'X') {
-                                    xCount++;
-                                    System.out.println(xCount);
+                    if (i == 0) { //PIRMOS EILUTES KAIMYNAI
+                        if (j == 0) {
+                            //pirmas kampinis pirmos eilutes elementas;
+                            int xCount = 0;
+                            for (int k = i; k < i + 2; k++) {
+                                for (int l = j; l < j + 2; l++) {
+                                    if (field[k][l] == 'X') {
+                                        xCount++;
+                                    }
                                 }
                             }
-                        }
-                        piesimas(i, j, xCount, field[i][j], false);
-                    } else if (j == field[i].length - 1) {
-                        //pirmos eilutes paskutinis kampinis elementas;
-                        int xCount = 0;
-                        for (int k = i; k < i + 2; k++) {
-                            for (int l = j - 1; l < j + 1; l++) {
-                                if (field[k][l] == 'X') {
-                                    xCount++;
+                            newField[i][j] = piesimas(xCount, field[i][j], false);
+                        } else if (j == field[i].length - 1) {
+                            //pirmos eilutes paskutinis kampinis elementas;
+                            int xCount = 0;
+                            for (int k = i; k < i + 2; k++) {
+                                for (int l = j - 1; l < j + 1; l++) {
+                                    if (field[k][l] == 'X') {
+                                        xCount++;
+                                    }
                                 }
                             }
-                        }
-                        piesimas(i, j, xCount, field[i][j], true);
-                    } else {
-                        //pirmos eilutes vidurinieji elementai
-                        int xCount = 0;
-                        for (int k = i; k < i + 2; k++) {
-                            for (int l = j - 1; l < j + 2; l++) {
-                                if (field[k][l] == 'X') {
-                                    xCount++;
+                            newField[i][j] = piesimas(xCount, field[i][j], true);
+                        } else {
+                            //pirmos eilutes vidurinieji elementai
+                            int xCount = 0;
+                            for (int k = i; k < i + 2; k++) {
+                                for (int l = j - 1; l < j + 2; l++) {
+                                    if (field[k][l] == 'X') {
+                                        xCount++;
+                                    }
                                 }
                             }
+                            newField[i][j] = piesimas(xCount, field[i][j], false);
                         }
-                        piesimas(i, j, xCount, field[i][j], false);
-                    }
 
-                    //PASKUTINES EILUTES KAIMYNAI
-                } else if (i == field.length - 1) {
-                    if (j == 0) {
-                        //pirmas kampinis paskutines eilutes elementas;
-                        int xCount = 0;
-                        for (int k = i - 1; k < i + 1; k++) {
-                            for (int l = j; l < j + 2; l++) {
-                                if (field[k][l] == 'X') {
-                                    xCount++;
+                        //PASKUTINES EILUTES KAIMYNAI
+                    } else if (i == field.length - 1) {
+                        if (j == 0) {
+                            //pirmas kampinis paskutines eilutes elementas;
+                            int xCount = 0;
+                            for (int k = i - 1; k < i + 1; k++) {
+                                for (int l = j; l < j + 2; l++) {
+                                    if (field[k][l] == 'X') {
+                                        xCount++;
+                                    }
                                 }
                             }
-                        }
-                        piesimas(i, j, xCount, field[i][j], false);
-                    } else if (j == field[i].length - 1) {
-                        //paskutines eilutes paskutinis kampinis elementas;
-                        int xCount = 0;
-                        for (int k = i - 1; k < i + 1; k++) {
-                            for (int l = j - 1; l < j + 1; l++) {
-                                if (field[k][l] == 'X') {
-                                    xCount++;
+                            newField[i][j] = piesimas(xCount, field[i][j], false);
+                        } else if (j == field[i].length - 1) {
+                            //paskutines eilutes paskutinis kampinis elementas;
+                            int xCount = 0;
+                            for (int k = i - 1; k < i + 1; k++) {
+                                for (int l = j - 1; l < j + 1; l++) {
+                                    if (field[k][l] == 'X') {
+                                        xCount++;
+                                    }
                                 }
                             }
-                        }
-                        piesimas(i, j, xCount, field[i][j], true);
-                    } else {
-                        //paskutines eilutes vidurinieji elementai
-                        int xCount = 0;
-                        for (int k = i - 1; k < i + 1; k++) {
-                            for (int l = j - 1; l < j + 2; l++) {
-                                if (field[k][l] == 'X') {
-                                    xCount++;
+                            newField[i][j] = piesimas(xCount, field[i][j], true);
+                        } else {
+                            //paskutines eilutes vidurinieji elementai
+                            int xCount = 0;
+                            for (int k = i - 1; k < i + 1; k++) {
+                                for (int l = j - 1; l < j + 2; l++) {
+                                    if (field[k][l] == 'X') {
+                                        xCount++;
+                                    }
                                 }
                             }
+                            newField[i][j] = piesimas(xCount, field[i][j], false);
                         }
-                        piesimas(i, j, xCount, field[i][j], false);
-                    }
-                } else { //VIDURINIUJU EILUCIU KAIMYNAI
-                    if (j == 0) {
-                        //viduriniuju eiluciu pirmieji elementai
-                        int xCount = 0;
-                        for (int k = i - 1; k < i + 2; k++) {
-                            for (int l = j; l < j + 2; l++) {
-                                if (field[k][l] == 'X') {
-                                    xCount++;
+                    } else { //VIDURINIUJU EILUCIU KAIMYNAI
+                        if (j == 0) {
+                            //viduriniuju eiluciu pirmieji elementai
+                            int xCount = 0;
+                            for (int k = i - 1; k < i + 2; k++) {
+                                for (int l = j; l < j + 2; l++) {
+                                    if (field[k][l] == 'X') {
+                                        xCount++;
+                                    }
                                 }
                             }
-                        }
-                        piesimas(i, j, xCount, field[i][j], false);
+                            newField[i][j] = piesimas(xCount, field[i][j], false);
 
-                    } else if (j == field[i].length - 1) {
-                        //viduriniuju eiluciu paskutiniai elementai
-                        int xCount = 0;
-                        for (int k = i - 1; k < i + 2; k++) {
-                            for (int l = j - 1; l < j + 1; l++) {
-                                if (field[k][l] == 'X') {
-                                    xCount++;
+                        } else if (j == field[i].length - 1) {
+                            //viduriniuju eiluciu paskutiniai elementai
+                            int xCount = 0;
+                            for (int k = i - 1; k < i + 2; k++) {
+                                for (int l = j - 1; l < j + 1; l++) {
+                                    if (field[k][l] == 'X') {
+                                        xCount++;
+                                    }
                                 }
                             }
-                        }
-                        piesimas(i, j, xCount, field[i][j], true);
-                    } else {
-                        //viduriniuju eiluciu vidurinieji elementai
-                        int xCount = 0;
-                        for (int k = i - 1; k < i + 2; k++) {
-                            for (int l = j - 1; l < j + 2; l++) {
-                                if (field[k][l] == 'X') {
-                                    xCount++;
+                            newField[i][j] = piesimas(xCount, field[i][j], true);
+                        } else {
+                            //viduriniuju eiluciu vidurinieji elementai
+                            int xCount = 0;
+                            for (int k = i - 1; k < i + 2; k++) {
+                                for (int l = j - 1; l < j + 2; l++) {
+                                    if (field[k][l] == 'X') {
+                                        xCount++;
+                                    }
                                 }
                             }
+                            newField[i][j] = piesimas(xCount, field[i][j], false);
                         }
-                        piesimas(i, j, xCount, field[i][j], false);
                     }
                 }
             }
+            iteracijosCount++;
+            System.out.println();
+            System.out.println();
+            System.out.println();
         }
+
     }
 
-    public static void piesimas(int i, int j, int xCount, char target, boolean lineBreak) {
-        char[][] newField = new char[50][50];
+    public static char piesimas(int xCount, char target, boolean arKampinis) {
+        char kaimynas;
         if (target == 'X') {
+            xCount--;
             if (xCount < 4 && xCount > 1) {
-                newField[i][j] = 'X';
+                kaimynas = 'X';
             } else {
-                newField[i][j] = ',';
+                kaimynas = ',';
             }
         } else {
             if (xCount == 3) {
-                newField[i][j] = 'X';
+                kaimynas = 'X';
             } else {
-                newField[i][j] = ',';
+                kaimynas = ',';
             }
         }
-        System.out.print(newField[i][j]);
-        if (lineBreak) {
+        System.out.print(kaimynas);
+        if (arKampinis) {
             System.out.println();
         }
-        return;
+        return kaimynas;
+    }
+
+    //PALYGINIMAS SU PRIES TAI BUVUSIA
+    static public boolean arNeLygus(char[][] field, char[][] newField) {
+        for (int i = 0; i < field.length; i++) {
+            for (int j = 0; j < field[i].length; j++) {
+                if (field[i][j] != newField[i][j]) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    //ARRAY SUKEITIMAS, IGALINAMAS PRIES KIEVIENA CIKLA, PO PIRMOSIOS PARTIJOS;
+    static public char[][] arraySukeitimas(char[][] field, char[][] newField) {
+        for (int i = 0; i < field.length; i++) {
+            for (int j = 0; j < field[i].length; j++) {
+                field[i][j] = newField[i][j];
+            }
+        }
+        return field;
     }
 }
